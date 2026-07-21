@@ -1,7 +1,7 @@
 import useAuthStore from '../stores/authStore';
 import { User, Resume, Job, Company, ForumPost, ForumComment, ShortVideo, Poll, LoginResponse, RegisterResponse } from '../types';
 
-const BASE_URL = '/api';
+const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export async function request<T>(
   url: string,
