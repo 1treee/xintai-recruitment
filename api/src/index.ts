@@ -86,7 +86,7 @@ async function startServer(): Promise<void> {
     await query('SELECT COUNT(*) FROM users');
     console.log('数据库表已存在');
   } catch (error: any) {
-    if (error.code === 'ER_NO_SUCH_TABLE') {
+    if (error.code === 'ER_NO_SUCH_TABLE' || error.code === '42P01') {
       console.log('数据库表不存在，正在初始化...');
       await initDatabase();
     } else {

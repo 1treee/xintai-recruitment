@@ -28,7 +28,7 @@
 - Node.js
 - Express 4
 - TypeScript
-- MySQL 8
+- PostgreSQL
 - JWT (认证)
 - bcryptjs (密码加密)
 
@@ -37,7 +37,7 @@
 ### 环境要求
 
 - Node.js >= 18
-- MySQL >= 8
+- PostgreSQL >= 14
 
 ### 安装依赖
 
@@ -105,10 +105,10 @@ xintai-recruitment/
 ```typescript
 export const DB_CONFIG = {
   host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
+  user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'xintai_recruitment',
-  port: parseInt(process.env.DB_PORT || '3306'),
+  database: process.env.DB_NAME || 'postgres',
+  port: parseInt(process.env.DB_PORT || '5432'),
 };
 ```
 
@@ -117,9 +117,11 @@ export const DB_CONFIG = {
 ```bash
 # 数据库配置
 DB_HOST=localhost
-DB_USER=root
+DB_USER=postgres
 DB_PASSWORD=your_password
-DB_NAME=xintai_recruitment
+DB_NAME=postgres
+DB_PORT=5432
+DB_SSL=false
 
 # JWT密钥
 JWT_SECRET=your_secret_key
@@ -161,37 +163,37 @@ JWT_SECRET=your_secret_key
 ### 用户表 (users)
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| id | INT | 主键 |
+| id | VARCHAR | 主键 |
 | phone | VARCHAR | 手机号 |
 | password | VARCHAR | 密码(加密) |
 | nickname | VARCHAR | 昵称 |
 | avatar | VARCHAR | 头像 |
 | role | VARCHAR | 角色 |
 | points | INT | 积分 |
-| created_at | DATETIME | 创建时间 |
+| created_at | TIMESTAMP | 创建时间 |
 
 ### 职位表 (jobs)
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| id | INT | 主键 |
+| id | VARCHAR | 主键 |
 | title | VARCHAR | 职位名称 |
-| company | VARCHAR | 公司名称 |
+| company_id | VARCHAR | 公司ID |
 | salary | VARCHAR | 薪资 |
 | location | VARCHAR | 工作地点 |
 | description | TEXT | 职位描述 |
-| created_at | DATETIME | 创建时间 |
+| created_at | TIMESTAMP | 创建时间 |
 
 ### 简历表 (resumes)
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| id | INT | 主键 |
-| user_id | INT | 用户ID |
+| id | VARCHAR | 主键 |
+| user_id | VARCHAR | 用户ID |
 | name | VARCHAR | 姓名 |
 | phone | VARCHAR | 手机号 |
 | education | VARCHAR | 学历 |
 | experience | TEXT | 工作经验 |
 | skills | TEXT | 技能标签 |
-| created_at | DATETIME | 创建时间 |
+| created_at | TIMESTAMP | 创建时间 |
 
 ## 🚀 部署说明
 
@@ -215,11 +217,12 @@ git subtree push --prefix dist origin gh-pages
 4. 设置 Start Command: `node api/dist/index.js`
 5. 添加环境变量
 
-### 数据库部署 (PlanetScale)
+### 数据库部署 (Supabase)
 
-1. 在 PlanetScale 创建数据库
-2. 获取连接字符串
+1. 在 Supabase 创建项目
+2. 获取数据库连接信息
 3. 在后端配置中更新数据库连接
+4. 设置 DB_SSL=true
 
 ## 📄 开源协议
 
