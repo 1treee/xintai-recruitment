@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: xintai-recruitment-backend
+    env: node
+    region: singapore
+    plan: starter
+    buildCommand: npm run build:backend
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: DB_HOST
+        value: ""
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_USER
+        value: ""
+      - key: DB_PASSWORD
+        value: ""
+      - key: DB_NAME
+        value: ""
+      - key: DB_SSL
+        value: "true"
+      - key: CORS_ORIGIN
+        value: ""
+
+  - type: static
+    name: xintai-recruitment-frontend
+    env: static
+    region: singapore
+    buildCommand: npm run build:frontend
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: ""

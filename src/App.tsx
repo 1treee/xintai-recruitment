@@ -18,7 +18,7 @@ function App() {
   const authRoutes = ['/login', '/register'];
   
   return (
-    <BrowserRouter basename="/xintai-recruitment">
+    <BrowserRouter>
       <Routes>
         <Route
           path="/login"
