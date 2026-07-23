@@ -1,4 +1,4 @@
-import { Pool, QueryResult } from 'pg';
+import { Pool, QueryResult, QueryResultRow } from 'pg';
 import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, DB_SSL } from './env';
 
 export const pool = new Pool({
@@ -11,7 +11,7 @@ export const pool = new Pool({
   ssl: DB_SSL ? { rejectUnauthorized: false } : false,
 });
 
-export const query = async <T = any>(sql: string, params?: any[]): Promise<T[]> => {
+export const query = async <T extends QueryResultRow = QueryResultRow>(sql: string, params?: any[]): Promise<T[]> => {
   const result: QueryResult<T> = await pool.query(sql, params);
   return result.rows;
 };

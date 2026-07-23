@@ -1,20 +1,11 @@
-import mysql from 'mysql2/promise';
-import { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } from '../config/env';
+import { pool } from '../config/db';
 import * as fs from 'fs';
 import * as path from 'path';
 
 async function initDatabase() {
-  const conn = await mysql.createConnection({
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASSWORD,
-    port: parseInt(DB_PORT),
-  });
+  const client = await pool.connect();
 
   try {
-    await conn.execute(`CREATE DATABASE IF NOT EXISTS ${DB_NAME}`);
-    await conn.execute(`USE ${DB_NAME}`);
-
     const sqlPath = path.join(__dirname, '../../sql/init.sql');
     const sqlContent = fs.readFileSync(sqlPath, 'utf8');
 
@@ -22,7 +13,7 @@ async function initDatabase() {
     
     for (const stmt of statements) {
       try {
-        await conn.execute(stmt);
+        await client.query(stmt);
       } catch (e) {
         console.log('执行语句时出错:', stmt.substring(0, 100), e);
       }
@@ -32,7 +23,7 @@ async function initDatabase() {
   } catch (error) {
     console.error('数据库初始化失败:', error);
   } finally {
-    await conn.end();
+    client.release();
   }
 }
 
