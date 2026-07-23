@@ -12,7 +12,7 @@ export const pool = new Pool({
 });
 
 export const query = async <T extends QueryResultRow = QueryResultRow>(sql: string, params?: any[]): Promise<T[]> => {
-  const result: QueryResult<T> = await pool.query(sql, params);
+  const result = await pool.query<T>(sql, params);
   return result.rows;
 };
 
